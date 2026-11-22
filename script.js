@@ -8,7 +8,7 @@
     { tipo: "img", valor: "imagens/monica-ata.gif" },
     { tipo: "img", valor: "imagens/lasier-martins.gif" },
     { tipo: "img", valor: "imagens/nazare-confusa.gif" },
-    { tipo: "img", valor: "imagens/melhor-meme-do-mundo.gif" }
+    { tipo: "img", valor: "imagens/o-melhor-meme-do-mundo-é-o-trollface.gif" }
   ];
 
   const TEMPO_GIRO = 550;            // ms, igual a --tempo-giro no CSS
