@@ -1,0 +1,194 @@
+:root {
+  --fundo: #1b2a41;
+  --painel: #243b5a;
+  --verso: #ff7b3d;
+  --verso-escuro: #d9541a;
+  --frente: #fff6e5;
+  --j1: #ffd23f;
+  --j2: #3ddbd9;
+  --texto: #fff6e5;
+  --tempo-giro: 0.55s;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+}
+
+.jogo {
+  width: min(100%, 560px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+h1 {
+  font-size: clamp(1.8rem, 6vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Placar */
+.placar {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.jogador {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: var(--painel);
+  border: 3px solid transparent;
+  opacity: 0.6;
+  transition: opacity 0.3s, transform 0.3s, border-color 0.3s, background 0.3s;
+}
+
+.jogador .nome { font-weight: 500; }
+.jogador .pontos { font-size: 1.8rem; font-weight: 800; }
+
+.jogador.ativo {
+  opacity: 1;
+  transform: scale(1.05);
+}
+#placar-1.ativo { border-color: var(--j1); background: color-mix(in srgb, var(--j1) 18%, var(--painel)); }
+#placar-2.ativo { border-color: var(--j2); background: color-mix(in srgb, var(--j2) 18%, var(--painel)); }
+#placar-1.ativo .pontos { color: var(--j1); }
+#placar-2.ativo .pontos { color: var(--j2); }
+
+.pontos.subiu { animation: pulo 0.5s ease; }
+@keyframes pulo {
+  40% { transform: scale(1.6); }
+}
+
+.vez {
+  font-size: 1.25rem;
+  font-weight: 800;
+  min-height: 1.6em;
+  transition: color 0.3s;
+}
+.vez.j1 { color: var(--j1); }
+.vez.j2 { color: var(--j2); }
+
+/* Tabuleiro */
+.tabuleiro {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(6px, 2vw, 12px);
+}
+
+.carta {
+  position: relative;
+  aspect-ratio: 1;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  perspective: 700px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.carta-interior {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform var(--tempo-giro) cubic-bezier(.3, 1.4, .5, 1);
+}
+
+.carta.virada .carta-interior { transform: rotateY(180deg); }
+
+.face {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.verso {
+  background:
+    repeating-linear-gradient(45deg, transparent 0 10px, rgba(255,255,255,.12) 10px 20px),
+    var(--verso);
+  border: 3px solid var(--verso-escuro);
+  font-size: clamp(1.6rem, 7vw, 2.4rem);
+  color: var(--frente);
+  font-weight: 800;
+  transition: filter 0.2s;
+}
+.carta:not(.virada):not(:disabled):hover .verso { filter: brightness(1.12); }
+
+.frente {
+  background: var(--frente);
+  transform: rotateY(180deg);
+  border: 3px solid var(--frente);
+  font-size: clamp(2rem, 9vw, 3.2rem);
+}
+.frente img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.carta.encontrada .frente {
+  border-color: var(--j2);
+  animation: brilho 0.6s ease;
+}
+.carta.encontrada.j1 .frente { border-color: var(--j1); }
+.carta.encontrada.j2 .frente { border-color: var(--j2); }
+@keyframes brilho {
+  50% { box-shadow: 0 0 22px 6px rgba(255, 246, 229, .8); }
+}
+
+.carta:disabled { cursor: default; }
+.carta:focus-visible { outline: 3px solid var(--frente); outline-offset: 3px; border-radius: 14px; }
+
+/* Resultado */
+.resultado {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  animation: entrada 0.5s ease;
+}
+.resultado[hidden] { display: none; }
+.resultado p { font-size: 1.5rem; font-weight: 800; }
+
+@keyframes entrada {
+  from { opacity: 0; transform: translateY(12px) scale(.95); }
+}
+
+button#btn-reiniciar {
+  font: inherit;
+  font-weight: 800;
+  font-size: 1.05rem;
+  padding: 12px 26px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--j1);
+  color: var(--fundo);
+  cursor: pointer;
+  transition: transform 0.2s, filter 0.2s;
+}
+button#btn-reiniciar:hover { transform: scale(1.06); filter: brightness(1.08); }
+button#btn-reiniciar:focus-visible { outline: 3px solid var(--frente); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: 0.01s !important; }
+}

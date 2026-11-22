@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jogo da Memória – 2 Jogadores</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="jogo">
+    <h1>Jogo da Memória</h1>
+
+    <section class="placar" aria-label="Placar">
+      <div class="jogador" id="placar-1">
+        <span class="nome">Jogador 1</span>
+        <span class="pontos" id="pontos-1">0</span>
+      </div>
+      <div class="jogador" id="placar-2">
+        <span class="nome">Jogador 2</span>
+        <span class="pontos" id="pontos-2">0</span>
+      </div>
+    </section>
+
+    <p class="vez" id="mensagem-vez" aria-live="polite">Vez do Jogador 1</p>
+
+    <section class="tabuleiro" id="tabuleiro" aria-label="Tabuleiro"></section>
+
+    <section class="resultado" id="resultado" hidden>
+      <p id="mensagem-resultado"></p>
+      <button type="button" id="btn-reiniciar">Jogar novamente</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
